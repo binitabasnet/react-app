@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Map, { NavigationControl } from "react-map-gl";
+import Navbar from "./components/navbar.js";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <Map
+        mapLib={maplibregl}
+        initialViewState={{
+          longitude: 16.62662018,
+          latitude: 49.2125578,
+          zoom: 14,
+        }}
+        style={{ width: "100%", height: " calc(100vh - 98px)" }}
+        mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?skey=d0X9pn0mMLK2F6CEa34M"
+        // mapStyle="https://api.maptiler.com/maps/streets/style.json?key=qK7LLaG7piAsHQIB6JId"
+      >
+        <NavigationControl position="top-left" />
+      </Map>
     </div>
   );
 }
