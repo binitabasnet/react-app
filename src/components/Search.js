@@ -1,6 +1,8 @@
 import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/lib/maplibre-gl-geocoder.css";
-import maplibregl from "maplibre-gl";
+import mapboxgl from "mapbox-gl";
+import maplibregl, { Map } from "maplibre-gl";
+import { Button } from "react-bootstrap";
 import { useControl } from "react-map-gl";
 
 const geocoder_api = {
@@ -22,7 +24,7 @@ const geocoder_api = {
         mode: "cors",
         headers: new Headers({ "Content-Type": "application/json" }),
       });
-      console.log(config.query);
+
       const geojson = await response.json();
       for (let feature of geojson.features) {
         let center = [
@@ -53,57 +55,57 @@ const geocoder_api = {
   },
 
   reverseGeocode: async (config) => {
-    const features = [];
-    try {
-      let request =
-        "https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36&lat=" +
-        config.query +
-        "&lng" +
-        config.query;
-      const response = await fetch(request, {
-        method: "GET",
-        mode: "cors",
-        headers: new Headers({ "Content-Type": "application/json" }),
-      });
-      const geojson = await response.json();
-      for (let feature of geojson.features) {
-        let center = [
-          feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
-          feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
-        ];
-        let point = {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: center,
-          },
-          place_name: feature.properties.display_name,
-          properties: feature.properties,
-          text: feature.properties.display_name,
-          place_type: ["place"],
-          center: center,
-        };
-        features.push(point);
-      }
-    } catch (e) {
-      console.error(`Failed to reverseGeocode with error: ${e}`);
+    var coordinates = [config.lngLat.lng, config.lngLat.lat];
+
+    // on small zoom levels it could happen that a location is present multiple times on the map
+    while (Math.abs(config.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += config.lngLat.lng > coordinates[0] ? 360 : -360;
     }
+
+    let request =
+      "https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36&lat=" +
+      coordinates[1] +
+      "&lng" +
+      coordinates[0];
+
+    fetch(request, {
+      method: "GET",
+      mode: "cors",
+      headers: new Headers({ "Content-Type": "application/json" }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.features.length) {
+          const address = result.features[0].properties.formatted;
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(address)
+            .addTo(Map);
+        } else {
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML("No address found")
+            .addTo(Map);
+        }
+      });
   },
 };
-const Controls = () => {
+
+const Search = () => {
   function LoadGeocoder() {
     useControl(
       () => {
         const ctrl = new MaplibreGeocoder(geocoder_api, {
           maplibregl: maplibregl,
-          collapsed: true,
+          // collapsed: true,
           showResultsWhileTyping: true,
           minLength: 5,
+          reverseGeocode: true,
         });
         return ctrl;
       },
       {
-        position: "top-right",
+        position: "top-left",
       }
     );
   }
@@ -116,7 +118,7 @@ const Controls = () => {
         return ctrl2;
       },
       {
-        position: "top-right",
+        position: "top-left",
       }
     );
   }
@@ -124,4 +126,4 @@ const Controls = () => {
   return LoadNavigator();
 };
 
-export default Controls;
+export default Search;
