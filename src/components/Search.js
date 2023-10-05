@@ -2,22 +2,19 @@ import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/lib/maplibre-gl-geocoder.css";
 import mapboxgl from "mapbox-gl";
 import maplibregl, { Map } from "maplibre-gl";
-import { Button } from "react-bootstrap";
+
 import { useControl } from "react-map-gl";
 
 const geocoder_api = {
-  //search api: https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=51bb27fd-fa08-4853-8a9b-78eb0a4e925e
-  // &name=[search word]Lat=[LATITUDE]&currentLng=[LONGITUDE]
-  // reverse geocoding:  https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36
-  // &lat=[LATITUDE]&lng=[LONGITUDE]
-
+  // autocomplete api:https://route-init.gallimap.com/api/v1/search/autocomplete?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36
+  // &word=kathmandu&currentLat=27.70088&currentLng=85.29645
   forwardGeocode: async (config) => {
     const features = [];
     try {
       let request =
-        "https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=51bb27fd-fa08-4853-8a9b-78eb0a4e925e&name=" +
+        "https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=8dc34789-06bf-4d49-9a9b-016d7ed8f551&name=" +
         config.query +
-        "&Lat=[LATITUDE]&currentLng=[LONGITUDE]";
+        "&currentLat=27.700769&currentLng=85.300140";
 
       const response = await fetch(request, {
         method: "GET",
@@ -26,10 +23,12 @@ const geocoder_api = {
       });
 
       const geojson = await response.json();
-      for (let feature of geojson.features) {
+      //  console.log(geojson.data);
+      for (let feature of geojson.data?.features) {
+        const ll = feature.geometry;
         let center = [
-          feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
-          feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
+          ll.coordinates[0] + (ll.coordinates[2] - ll.coordinates[0]) / 2,
+          ll.coordinates[1] + (ll.coordinates[3] - ll.coordinates[1]) / 2,
         ];
         let point = {
           type: "Feature",
@@ -37,11 +36,7 @@ const geocoder_api = {
             type: "Point",
             coordinates: center,
           },
-          place_name: feature.properties.display_name,
           properties: feature.properties,
-          text: feature.properties.display_name,
-          place_type: ["place"],
-          center: center,
         };
         features.push(point);
       }
@@ -55,11 +50,11 @@ const geocoder_api = {
   },
 
   reverseGeocode: async (config) => {
-    var coordinates = [config.lngLat.lng, config.lngLat.lat];
+    var points = config.query;
+    var coordinates = [points.lngLat.lng, points.lngLat.lat];
 
-    // on small zoom levels it could happen that a location is present multiple times on the map
-    while (Math.abs(config.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += config.lngLat.lng > coordinates[0] ? 360 : -360;
+    while (Math.abs(points.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += points.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
     let request =
@@ -100,7 +95,9 @@ const Search = () => {
           // collapsed: true,
           showResultsWhileTyping: true,
           minLength: 5,
+          trackProximity: true,
           reverseGeocode: true,
+          placeholder: "Search for Geo Location",
         });
         return ctrl;
       },
