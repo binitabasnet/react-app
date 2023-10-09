@@ -1,5 +1,5 @@
 import React from "react";
-import Map, { Layer, Source } from "react-map-gl/maplibre";
+import { Layer, Source } from "react-map-gl/maplibre";
 
 const Addpoint = () => {
   // point geojson

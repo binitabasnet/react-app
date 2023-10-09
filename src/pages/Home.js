@@ -14,9 +14,9 @@ import { Button } from "react-bootstrap";
 import view from "../assets/images/360-degree.png";
 import "./home.scss";
 import Autocomplete from "../components/autocomplete/Autocomplete";
+import { mapUrl } from "../urls/urls";
 
 const Home = () => {
-  // const url = https://map-init.gallimap.com/styles/light/style.json;
   return (
     <>
       <Map
