@@ -5,11 +5,15 @@ import "./autocomplete.scss";
 const Autocomplete = () => {
   const [word, setWord] = useState("");
   const [data, setData] = useState([]);
+  const [place, setPlace] = useState([]);
 
   useEffect(() => {
     const fetchApi = async (url) => {
-      //   const response = await fetch(url).then((rep) => console.log(rep));
-      fetch(url)
+      fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: new Headers({ "Content-Type": "application/json" }),
+      })
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
@@ -21,23 +25,31 @@ const Autocomplete = () => {
     fetchApi(url);
   }, [word]);
 
+  const searchCurrentLocation = async (url) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          setPlace(json.data);
+        }
+      });
+  };
+
   return (
     <>
       <div className="autocomplete-search">
         <input
           name="myInput"
-          placeholder="Search for location"
+          placeholder="Search places here"
           onChange={(e) => {
             setWord(e.target.value);
           }}
         />
         <div className="search-data">
           {data.map((item, index) => (
-            <>
-              <ul>
-                <li key={index}>{item.name}</li>
-              </ul>
-            </>
+            <ul key={index}>
+              <li key={item.id}>{item.name}</li>
+            </ul>
           ))}
         </div>
       </div>
