@@ -6,7 +6,10 @@ const Copyrightattribute = () => {
   const [toggle, setToggle] = useState(true);
   return (
     <>
-      <Button onClick={() => setToggle(!toggle)} class="btn btn-primary mb-5">
+      <Button
+        onClick={() => setToggle(!toggle)}
+        className="btn btn-primary mb-5"
+      >
         Toggle State
       </Button>
       {toggle && (

@@ -13,9 +13,12 @@ const geocoder_api = {
     const features = [];
     try {
       let request =
-        `https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=${process.env.REACT_APP_TOKEN_KEY}&name=` +
-        config.query +
-        `&currentLat=27.700769&currentLng=85.300140`;
+        "https://route-init.gallimap.com/searchApi/geojson_searchResult?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36&name=" +
+        config.query;
+      // let request =
+      //   `https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=${process.env.REACT_APP_TOKEN_KEY}&name=` +
+      //   config.query +
+      //   `&currentLat=27.700769&currentLng=85.300140`;
 
       const response = await fetch(request, {
         method: "GET",
@@ -26,11 +29,11 @@ const geocoder_api = {
       const geojson = await response.json();
       console.log(geojson.data);
       for (let feature of geojson.data?.features) {
-        const ll = feature.geometry;
-        let center = [
-          ll.coordinates[0] + (ll.coordinates[2] - ll.coordinates[0]) / 2,
-          ll.coordinates[1] + (ll.coordinates[3] - ll.coordinates[1]) / 2,
+        const center = [
+          feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
+          feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
         ];
+
         let point = {
           type: "Feature",
           geometry: {
@@ -95,7 +98,7 @@ const Search = () => {
           maplibregl: maplibregl,
           // collapsed: true,
           showResultsWhileTyping: true,
-          minLength: 5,
+          minLength: 3,
           trackProximity: true,
           reverseGeocode: true,
           placeholder: "Search for places here",

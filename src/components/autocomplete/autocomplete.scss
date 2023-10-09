@@ -1,0 +1,25 @@
+.autocomplete-search {
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  margin: 10px;
+  border-radius: 20px;
+  //   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+  // rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  input {
+    top: -12px;
+    padding: 12px;
+    margin: 12px;
+    border: none;
+  }
+  .search-data {
+    ul {
+      list-style: none;
+      li {
+        margin-bottom: 22px;
+        font-size: small;
+      }
+    }
+  }
+}

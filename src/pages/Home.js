@@ -13,6 +13,7 @@ import Addpolygon from "../components/features/Addpolygon";
 import { Button } from "react-bootstrap";
 import view from "../assets/images/360-degree.png";
 import "./home.scss";
+import Autocomplete from "../components/autocomplete/Autocomplete";
 
 const Home = () => {
   // const url = https://map-init.gallimap.com/styles/light/style.json;
@@ -29,10 +30,8 @@ const Home = () => {
         mapStyle="https://map-init.gallimap.com/styles/light/style.json"
         attributionControl={false}
       >
-        <Search />
-        {/* <Addpoint />
-        <Addline />
-        <Addpolygon /> */}
+        {/* <Search /> */}
+        <Autocomplete />
         <Controls />
       </Map>
       {/* <div className="view">
