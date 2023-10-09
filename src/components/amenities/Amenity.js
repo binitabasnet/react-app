@@ -36,8 +36,8 @@ const Amenity = () => {
               </li>
               <li>
                 <Button>
-                  <img src={museum} alt="museum" />
-                  <span>Museum</span>
+                  <img src={drugs} alt="drugs" />
+                  <span>Pharmacies</span>
                 </Button>
               </li>
               <li>
@@ -48,14 +48,8 @@ const Amenity = () => {
               </li>
               <li>
                 <Button>
-                  <img src={drugs} alt="drugs" />
-                  <span>Pharmacies</span>
-                </Button>
-              </li>
-              <li>
-                <Button>
-                  <img src={fuel} alt="fuel" />
-                  <span>Petrol Pump</span>
+                  <img src={museum} alt="museum" />
+                  <span>Museums</span>
                 </Button>
               </li>
             </ul>

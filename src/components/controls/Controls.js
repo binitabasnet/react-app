@@ -1,28 +1,37 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import {
   AttributionControl,
   FullscreenControl,
   GeolocateControl,
   NavigationControl,
 } from "react-map-gl/maplibre";
+import view from "../../assets/images/360-degree.png";
+import "./controls.scss";
+import Copyrightattribute from "../copyright_toggle/Copyrightattribute";
 
 const Controls = () => {
   return (
     <>
-      <NavigationControl position="top-right" />
+      <NavigationControl
+        position="bottom-right"
+        style={{ borderRadius: "26.02px" }}
+      />
       <GeolocateControl
-        position="top-right"
+        style={{ borderRadius: "50%" }}
+        position="bottom-right"
         positionOptions={{
           enableHighAccuracy: true,
         }}
         // trackUserLocation:true
       />
 
-      <FullscreenControl position="top-right" />
-      <AttributionControl
+      {/* <FullscreenControl
+        style={{ borderRadius: "50%" }}
         position="bottom-right"
-        customAttribution="© 2023 Galli Maps. All rights reserved."
-      />
+      /> */}
+      {/* <AttributionControl customAttribution="© 2023 Galli Maps. All rights reserved." /> */}
+      <Copyrightattribute />
     </>
   );
 };

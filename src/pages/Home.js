@@ -10,10 +10,12 @@ import Controls from "../components/controls/Controls";
 import Addline from "../components/features/Addline";
 import Addpoint from "../components/features/Addpoint";
 import Addpolygon from "../components/features/Addpolygon";
+import { Button } from "react-bootstrap";
+import view from "../assets/images/360-degree.png";
+import "./home.scss";
 
 const Home = () => {
-  const url = "https://map-init.gallimap.com/styles/light/style.json";
-
+  // const url = https://map-init.gallimap.com/styles/light/style.json;
   return (
     <>
       <Map
@@ -24,15 +26,20 @@ const Home = () => {
           zoom: 15,
         }}
         style={{ width: "100%", height: "100vh" }}
-        mapStyle={url}
+        mapStyle="https://map-init.gallimap.com/styles/light/style.json"
         attributionControl={false}
       >
         <Search />
-        {/* <Addpoint /> */}
-        {/* <Addline /> */}
-        {/* <Addpolygon /> */}
+        {/* <Addpoint />
+        <Addline />
+        <Addpolygon /> */}
         <Controls />
       </Map>
+      {/* <div className="view">
+        <Button>
+          <img src={view} alt="view" />
+        </Button>
+      </div> */}
       <Amenity />
     </>
   );

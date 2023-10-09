@@ -8,13 +8,14 @@ import { useControl } from "react-map-gl";
 const geocoder_api = {
   // autocomplete api:https://route-init.gallimap.com/api/v1/search/autocomplete?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36
   // &word=kathmandu&currentLat=27.70088&currentLng=85.29645
+
   forwardGeocode: async (config) => {
     const features = [];
     try {
       let request =
-        "https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=8dc34789-06bf-4d49-9a9b-016d7ed8f551&name=" +
+        `https://route-init.gallimap.com/api/v1/search/currentLocation?accessToken=${process.env.REACT_APP_TOKEN_KEY}&name=` +
         config.query +
-        "&currentLat=27.700769&currentLng=85.300140";
+        `&currentLat=27.700769&currentLng=85.300140`;
 
       const response = await fetch(request, {
         method: "GET",
@@ -58,9 +59,9 @@ const geocoder_api = {
     }
 
     let request =
-      "https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=89a40903-b75a-46b6-822b-86eebad4fa36&lat=" +
+      `https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=${process.env.REACT_APP_REVERSE_GEOCODING_TOKEN}&lat=` +
       coordinates[1] +
-      "&lng" +
+      `&lng` +
       coordinates[0];
 
     fetch(request, {
@@ -97,7 +98,7 @@ const Search = () => {
           minLength: 5,
           trackProximity: true,
           reverseGeocode: true,
-          placeholder: "Search for Geo Location",
+          placeholder: "Search for places here",
         });
         return ctrl;
       },
