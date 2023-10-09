@@ -24,7 +24,7 @@ const geocoder_api = {
       });
 
       const geojson = await response.json();
-      //  console.log(geojson.data);
+      console.log(geojson.data);
       for (let feature of geojson.data?.features) {
         const ll = feature.geometry;
         let center = [
