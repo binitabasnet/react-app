@@ -1,23 +1,24 @@
 import React from "react";
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
+import "./copyright.scss";
+import info from "../../assets/images/info.png";
 
 const Copyrightattribute = () => {
   const [toggle, setToggle] = useState(true);
   return (
-    <>
-      <Button
-        onClick={() => setToggle(!toggle)}
-        className="btn btn-primary mb-5"
-      >
-        Toggle State
-      </Button>
-      {toggle && (
-        <div>
-          <span>© 2023 Galli Maps. All rights reserved.</span>
-        </div>
-      )}
-    </>
+    <Row className="copyright">
+      <Col md={3}>
+        {toggle && (
+          <div>
+            <span>© 2023 Galli Maps. All rights reserved.</span>
+          </div>
+        )}
+      </Col>
+      <Col md={9} className="info">
+        <img src={info} alt="info" onClick={() => setToggle(!toggle)} />
+      </Col>
+    </Row>
   );
 };
 

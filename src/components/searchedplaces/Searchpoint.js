@@ -10,11 +10,13 @@ const Searchpoint = (name) => {
 
   useEffect(() => {
     const searchCurrentLocation = async (url) => {
-      fetch(url)
+      await fetch(url)
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
             setPlace(json.data);
+          } else {
+            console.log("failed to fetch data");
           }
         });
     };

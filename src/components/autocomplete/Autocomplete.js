@@ -6,6 +6,8 @@ import directions from "../../assets/images/directions.png";
 import "./autocomplete.scss";
 import close from "../../assets/images/close.png";
 import Searchpoint from "../searchedplaces/Searchpoint";
+import { Col, Row } from "react-bootstrap";
+import location from "../../assets/images/location.png";
 
 const Autocomplete = () => {
   const [word, setWord] = useState("");
@@ -13,11 +15,7 @@ const Autocomplete = () => {
 
   useEffect(() => {
     const fetchApi = async (url) => {
-      fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: new Headers({ "Content-Type": "application/json" }),
-      })
+      await fetch(url)
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
@@ -31,24 +29,41 @@ const Autocomplete = () => {
     fetchApi(url);
   }, [word]);
 
-  //   const handleClear = () => {
-  //     setWord("");
-  //   };
+  const handleClear = () => {
+    setWord("");
+  };
+
+  const handleSearch = (name) => {
+    <>
+      <Searchpoint name={name} />
+    </>;
+  };
 
   return (
     <>
       <div className="autocomplete-search">
         <div className="search-box">
-          <img src={pin} alt="pin" />
-          <input
-            name="myInput"
-            placeholder="Search places here"
-            onChange={(e) => {
-              setWord(e.target.value);
-            }}
-          />
-          <img src={search} alt="search" />
-          <img src={directions} alt="directions" />
+          <Row style={{ display: "flex", justifyContent: "space-between" }}>
+            <Col md={2}>
+              <img src={pin} alt="pin" />
+            </Col>
+            <Col md={8}>
+              <input
+                name="myInput"
+                placeholder="Search places here"
+                onChange={(e) => {
+                  setWord(e.target.value);
+                }}
+              />
+            </Col>
+            <Col md={2}>
+              <img src={search} alt="search" />
+            </Col>
+            <Col md={2}>
+              <img src={directions} alt="directions" />
+            </Col>
+          </Row>
+
           {/* <div className="close-button">
             <img onClick={handleClear} src={close} alt="close" />
           </div> */}
@@ -58,8 +73,15 @@ const Autocomplete = () => {
           {data.slice(0, 5).map((item, index) => (
             <ul key={index}>
               <li key={item.id}>
-                <img src={item.logo} alt="logo" />
-                <span>{item.name}</span>
+                <Row style={{ display: "flex" }}>
+                  <Col md={2}>
+                    <img src={location} alt="logo" />
+                  </Col>
+                  <Col md={10}>
+                    <span onClick={handleSearch(item.name)}>{item.name}</span>
+                  </Col>
+                </Row>
+
                 {/* <img src={close} alt="close" /> */}
                 {/* <Searchpoint name={item.name} /> */}
               </li>

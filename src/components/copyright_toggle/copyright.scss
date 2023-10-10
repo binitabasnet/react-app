@@ -1,0 +1,27 @@
+.copyright {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  bottom: 5px;
+  right: 10px;
+
+  span {
+    background-color: white;
+    padding: 6px;
+    font-size: 12px;
+    border-radius: 25px;
+  }
+  .info {
+    background-color: white;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
