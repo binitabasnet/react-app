@@ -2,6 +2,40 @@ import React from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 
 const Addpoint = () => {
+  // Your JSON data
+  const jsonData = {
+    success: true,
+    message: "Search Without Current Location",
+    data: {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: {
+            searchedItem: "Sanepa",
+            province: "Bagmati Pradesh",
+            district: "Kathmandu",
+            municipality: "Kathmandu",
+            ward: "3",
+            distance: null,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [85.30185849999998, 27.684530899981542],
+          },
+        },
+      ],
+    },
+  };
+
+  // Extracting coordinates from the JSON data
+  const coordinates = jsonData.data.features[0].geometry.coordinates;
+
+  // Iterating through the coordinates (latitude and longitude)
+  for (let i = 0; i < coordinates.length; i++) {
+    console.log("Coordinate", i + 1, ":", coordinates[i]);
+  }
+
   // point geojson
   const geojson = {
     type: "FeatureCollection",

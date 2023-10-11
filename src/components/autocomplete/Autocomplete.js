@@ -8,6 +8,7 @@ import close from "../../assets/images/close.png";
 import Searchpoint from "../searchedplaces/Searchpoint";
 import { Col, Row } from "react-bootstrap";
 import location from "../../assets/images/location.png";
+import { Link } from "react-router-dom";
 
 const Autocomplete = () => {
   const [word, setWord] = useState("");
@@ -37,6 +38,13 @@ const Autocomplete = () => {
     <>
       <Searchpoint name={name} />
     </>;
+  };
+
+  const [showDiv, setShowDiv] = useState(false);
+
+  // Function to handle button click
+  const handleButtonClick = () => {
+    setShowDiv(!showDiv); // Toggle the state to show/hide the div
   };
 
   return (
@@ -78,12 +86,20 @@ const Autocomplete = () => {
                     <img src={location} alt="logo" />
                   </Col>
                   <Col md={10}>
-                    <span onClick={handleSearch(item.name)}>{item.name}</span>
+                    <Link to="/" onClick={handleButtonClick}>
+                      <span>{item.name}</span>
+
+                      {/* Render div based on propToShow */}
+                      {showDiv && (
+                        <div>
+                          <Searchpoint name={item.name} />
+                        </div>
+                      )}
+                    </Link>
                   </Col>
                 </Row>
 
                 {/* <img src={close} alt="close" /> */}
-                {/* <Searchpoint name={item.name} /> */}
               </li>
             </ul>
           ))}

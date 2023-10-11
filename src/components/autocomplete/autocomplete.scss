@@ -34,6 +34,10 @@
       justify-content: space-between;
       li {
         font-size: small;
+        a {
+          text-decoration: none;
+          color: black;
+        }
         img {
           height: 30px;
           width: 30px;

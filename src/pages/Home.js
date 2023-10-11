@@ -17,6 +17,7 @@ import "./home.scss";
 import Autocomplete from "../components/autocomplete/Autocomplete";
 import { mapUrl } from "../urls/urls";
 import Copyrightattribute from "../components/copyright_toggle/Copyrightattribute";
+import Searchpoint from "../components/searchedplaces/Searchpoint";
 
 const Home = () => {
   return (
@@ -40,7 +41,7 @@ const Home = () => {
             <Amenity />
           </Col>
         </Row>
-
+        {/* <Searchpoint /> */}
         <Controls />
       </Map>
       <Copyrightattribute />
