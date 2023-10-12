@@ -36,14 +36,20 @@
         font-size: small;
         a {
           text-decoration: none;
-          color: black;
+          color: #000000;
+          position: absolute;
+          /* right: 73px; */
+          left: 62px;
+          padding-top: 3px;
         }
         img {
           height: 30px;
           width: 30px;
         }
         span {
-          padding: 32px;
+          // padding: 32px;
+          // position: absolute;
+          // top: 3px;
         }
       }
     }

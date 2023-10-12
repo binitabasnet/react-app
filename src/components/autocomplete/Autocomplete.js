@@ -14,30 +14,34 @@ const Autocomplete = () => {
   const [word, setWord] = useState("");
   const [data, setData] = useState([]);
 
+  const fetchApi = async (url) => {
+    await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network Response was not ok");
+        }
+        return response.json();
+      })
+      .then((json) => {
+        setData(json.data);
+      })
+      .catch((error) => {
+        console.error("There has been a problem with  fetch operation:", error);
+      });
+  };
+
   useEffect(() => {
-    const fetchApi = async (url) => {
-      await fetch(url)
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.success) {
-            setData(json.data);
-          } else {
-            console.log("failed to fetch data");
-          }
-        });
-    };
     const url = `${autocompleteUrl}&word=${word}`;
     fetchApi(url);
   }, [word]);
 
   const handleClear = () => {
     setWord("");
-  };
-
-  const handleSearch = (name) => {
-    <>
-      <Searchpoint name={name} />
-    </>;
   };
 
   const [showDiv, setShowDiv] = useState(false);

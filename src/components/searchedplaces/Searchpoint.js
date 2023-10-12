@@ -50,20 +50,15 @@ const Searchpoint = ({ name }) => {
   };
 
   const searchCurrentLocation = async (url) => {
-    // await fetch(url)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     if (json.success) {
-    //       setPlace(json.data);
-    //       console.log(place);
-    //     } else {
-    //       console.log("failed to fetch data");
-    //     }
-    //   });
     const features = [];
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const geojson = await response.json();
-    console.log("geojson", geojson);
+
     if (geojson.success) {
       setPlace(geojson.data);
     } else {
@@ -112,9 +107,9 @@ const Searchpoint = ({ name }) => {
 
           if (feat.geometry.type === "Point") {
             layer = <Layer key={index} {...pointStyle} />;
-          } else if (feat.geometry.type === "Polygon") {
+          } else if (feat.geometry.type === "Polygon" || "MultiPolygon") {
             layer = <Layer key={index} {...polygonStyle} />;
-          } else if (feat.geometry.type === "LineString") {
+          } else if (feat.geometry.type === "LineString" || "MultiLineString") {
             layer = <Layer key={index} {...lineStyle} />;
           }
 
