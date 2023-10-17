@@ -41,7 +41,6 @@ const Home = () => {
             <Amenity />
           </Col>
         </Row>
-        {/* <Searchpoint /> */}
         <Controls />
       </Map>
       <Copyrightattribute />

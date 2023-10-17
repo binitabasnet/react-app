@@ -28,14 +28,6 @@ const Addpoint = () => {
     },
   };
 
-  // Extracting coordinates from the JSON data
-  const coordinates = jsonData.data.features[0].geometry.coordinates;
-
-  // Iterating through the coordinates (latitude and longitude)
-  for (let i = 0; i < coordinates.length; i++) {
-    console.log("Coordinate", i + 1, ":", coordinates[i]);
-  }
-
   // point geojson
   const geojson = {
     type: "FeatureCollection",
