@@ -1,5 +1,6 @@
 import React from "react";
-import { Layer, Source } from "react-map-gl/maplibre";
+import { Layer, Marker, Source } from "react-map-gl/maplibre";
+import pin from "../../assets/images/pin.png";
 
 const Addline = () => {
   //line geojson

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Map, { Marker } from "react-map-gl/maplibre";
 
-import maplibregl, { CameraOptions } from "maplibre-gl";
+import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import Search from "../components/Search";
@@ -17,47 +17,16 @@ import "./home.scss";
 import Autocomplete from "../components/autocomplete/Autocomplete";
 import { mapUrl } from "../urls/urls";
 import Copyrightattribute from "../components/copyright_toggle/Copyrightattribute";
-import { useRef } from "react";
-import { useEffect } from "react";
 
 const Home = () => {
-  const [lng, setLng] = useState(85.30014);
-  const [lat, setLat] = useState(27.700769);
-  const [zoomLevel, setZoomLevel] = useState(15);
-
-  const mapContainer = useRef();
-
-  useEffect(() => {
-    console.log(lng, lat, "testing");
-    // let map = mapContainer?.current.getMap();
-    // map.flyTo({
-    //   center: [lng, lat],
-    //   zoom: zoomLevel,
-    //   speed: 1, // Controls the speed of the flight animation
-    //   curve: 1, // Controls the easing of the flight animation
-    //   essential: true,
-    // });
-    // console.log(mapContainer?.current);
-  }, [lat, lng]);
-
-  const settingZoomLevels = (lng, lat, zoomLevel) => {
-    setLng(lng);
-    setLat(lat);
-    setZoomLevel(zoomLevel);
-  };
-
   return (
     <>
       <Map
-        ref={mapContainer}
-        // zoom={zoomLevel}
-        minZoom={10}
-        maxZoom={22}
         mapLib={maplibregl}
         initialViewState={{
-          longitude: lng,
-          latitude: lat,
-          zoom: zoomLevel,
+          longitude: 85.30014,
+          latitude: 27.700769,
+          zoom: 15,
         }}
         style={{ width: "100%", height: "100vh" }}
         mapStyle="https://map-init.gallimap.com/styles/light/style.json"
@@ -65,7 +34,7 @@ const Home = () => {
       >
         <Row>
           <Col md={4}>
-            <Autocomplete settingZoomLevels={settingZoomLevels} />
+            <Autocomplete />
           </Col>
           <Col md={8}>
             <Amenity />

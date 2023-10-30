@@ -11,7 +11,7 @@ import location from "../../assets/images/location.png";
 import { Link } from "react-router-dom";
 import { imageUrl } from "../../urls/urls";
 
-const Autocomplete = () => {
+const Autocomplete = ({ settingZoomLevels }) => {
   const [word, setWord] = useState("");
   const [data, setData] = useState([]);
   const [selectedWord, setSelectedWord] = useState(null);
@@ -146,7 +146,15 @@ const Autocomplete = () => {
           })}
         </div>
         {/* Render div based on propToShow */}
-        {showDiv && <Searchpoint name={selectedWord} />}
+
+        {showDiv && (
+          <div>
+            <Searchpoint
+              name={selectedWord}
+              settingZoomLevels={settingZoomLevels}
+            />
+          </div>
+        )}
       </div>
     </>
   );
