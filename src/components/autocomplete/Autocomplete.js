@@ -131,7 +131,7 @@ const Autocomplete = ({ settingZoomLevels }) => {
         </div>
 
         <div className="search-data">
-          {data.slice(0, 10).map((item, index) => {
+          {data.slice(0, 12).map((item, index) => {
             // const logoImage = `${imageUrl}/${JSON.parse(item.logo)[0].image}`;
             // console.log(`${imageUrl}/${JSON.parse(item.logo)[0].image}`);
             // console.log(JSON.parse(item.logo)[0].image);

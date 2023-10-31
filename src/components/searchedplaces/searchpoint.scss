@@ -1,8 +1,10 @@
 .point {
   position: absolute;
   z-index: 1;
-  img {
-    height: 30px;
-    width: 30px;
+  #my-map {
+    img {
+      height: 30px;
+      width: 30px;
+    }
   }
 }

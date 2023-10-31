@@ -112,7 +112,7 @@ const Searchpoint = ({ name, settingZoomLevels }) => {
           };
         } else if (feature.geometry.type === "LineString") {
           // Handle LineString geometry
-          settingZoomLevels(coordinates[0][0], coordinates[0][1], 18); // Assuming the first point of the LineString for setting zoom
+          settingZoomLevels(coordinates[0][0], coordinates[0][1], 13); // Assuming the first point of the LineString for setting zoom
           formattedFeature = {
             type: "Feature",
             geometry: {
@@ -132,7 +132,6 @@ const Searchpoint = ({ name, settingZoomLevels }) => {
             16
           ); // Assuming the first point of the first LineString for setting zoom
 
-          console.log(multiLineStringCoordinates[0][1]);
           formattedFeature = {
             type: "Feature",
             geometry: {
@@ -165,9 +164,16 @@ const Searchpoint = ({ name, settingZoomLevels }) => {
       <Source id="my-map" type="geojson" data={place}>
         {place.features?.map((feat, index) => {
           let layer = null;
+          // let marker = null;
 
           if (feat.geometry.type === "Point") {
-            layer = <Layer key={index} {...pointStyle} />;
+            // layer = <Layer key={index} {...pointStyle} />;
+            const point = feat.geometry.coordinates;
+            layer = (
+              <Marker longitude={point[0]} latitude={point[1]} anchor="bottom">
+                <img src={pin} alt="pin" style={{ height: "30px" }} />
+              </Marker>
+            );
           } else if (
             feat.geometry.type === "Polygon" ||
             feat.geometry.type === "MultiPolygon"
