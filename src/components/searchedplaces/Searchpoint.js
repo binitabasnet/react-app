@@ -50,62 +50,109 @@ const Searchpoint = ({ name, settingZoomLevels }) => {
   };
 
   const searchCurrentLocation = async (url) => {
-    // await fetch(url)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     if (json.success) {
-    //       setPlace(json.data);
-    //       console.log(place);
-    //     } else {
-    //       console.log("failed to fetch data");
-    //     }
-    //   });
-    const features = [];
     const response = await fetch(url);
     const geojson = await response.json();
-    console.log("geojson", geojson);
+
     if (geojson.success) {
       setPlace(geojson.data);
-      console.log(geojson.data);
-      // if (geojson.data?.features[0].geometry.type == "Point") {
-      //   let lngData = geojson.data?.features[0].geometry.coordinates[0];
-      //   let latData = geojson.data?.features[0].geometry.coordinates[1];
-      //   // console.log(lngData, latData);
-      //   settingZoomLevels(lngData, latData, 18);
-      //   // console.log(geojson.data.features[0].geometry.coordinates);
-      // }
-      // settingZoomLevels()
+
+      const features = geojson.data.features.map((feature) => {
+        const coordinates = feature.geometry.coordinates;
+        let formattedFeature = null;
+
+        if (feature.geometry.type === "Point") {
+          // Handle Point geometry
+          const [lng, lat] = coordinates;
+          settingZoomLevels(lng, lat, 18);
+          formattedFeature = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [lng, lat],
+            },
+            properties: feature.properties,
+          };
+        } else if (feature.geometry.type === "Polygon") {
+          // Handle Polygon geometry
+          const polygonCoordinates = coordinates[0]; // Assuming the first set of coordinates represents the outer ring of the polygon
+          settingZoomLevels(
+            polygonCoordinates[0][0],
+            polygonCoordinates[0][1],
+            18
+          ); // Assuming the first point of the polygon for setting zoom
+
+          formattedFeature = {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [polygonCoordinates],
+            },
+            properties: feature.properties,
+          };
+        } else if (feature.geometry.type === "MultiPolygon") {
+          // Handle MultiPolygon geometry
+          const multiPolygonCoordinates = coordinates.map(
+            (polygon) => polygon[0][0]
+          ); // Assuming the first point of the first polygon for setting zoom
+
+          settingZoomLevels(
+            multiPolygonCoordinates[0][0],
+            multiPolygonCoordinates[0][1],
+            18
+          ); // Assuming the first point of the first polygon for setting zoom
+
+          // console.log(multiPolygonCoordinates[0][0]);
+          formattedFeature = {
+            type: "Feature",
+            geometry: {
+              type: "MultiPolygon",
+              coordinates: [multiPolygonCoordinates],
+            },
+            properties: feature.properties,
+          };
+        } else if (feature.geometry.type === "LineString") {
+          // Handle LineString geometry
+          settingZoomLevels(coordinates[0][0], coordinates[0][1], 18); // Assuming the first point of the LineString for setting zoom
+          formattedFeature = {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: [coordinates],
+            },
+            properties: feature.properties,
+          };
+        } else if (feature.geometry.type === "MultiLineString") {
+          // Handle MultiLineString geometry
+          const multiLineStringCoordinates = coordinates.map(
+            (lineString) => lineString[0]
+          );
+          settingZoomLevels(
+            multiLineStringCoordinates[0][0],
+            multiLineStringCoordinates[0][1],
+            16
+          ); // Assuming the first point of the first LineString for setting zoom
+
+          console.log(multiLineStringCoordinates[0][1]);
+          formattedFeature = {
+            type: "Feature",
+            geometry: {
+              type: "MultiLineString",
+              coordinates: [multiLineStringCoordinates],
+            },
+            properties: feature.properties,
+          };
+        }
+
+        return formattedFeature;
+      });
+
+      return {
+        type: "FeatureCollection",
+        features: features.filter((feature) => feature !== null),
+      };
     } else {
       console.log("failed to fetch data");
     }
-
-    for (let feature of geojson.data?.features) {
-      const coordinate = geojson.data?.features[0]?.geometry.coordinates;
-
-      // Iterating through the coordinates (latitude and longitude)
-
-      // const center=()=>{
-      //   for (let i = 0; i < coordinate.length; i++) {
-      //     console.log("Coordinate", i + 1, ":", coordinate[i]);
-      //     const center = [coordinate[i], coordinate[i + 1]];
-      //   }
-
-      // }
-      const center = [coordinate[0], coordinate[1]];
-
-      let point = {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: center,
-        },
-        properties: feature.properties,
-      };
-      features.push(point);
-    }
-    return {
-      features: features,
-    };
   };
 
   useEffect(() => {
@@ -121,9 +168,15 @@ const Searchpoint = ({ name, settingZoomLevels }) => {
 
           if (feat.geometry.type === "Point") {
             layer = <Layer key={index} {...pointStyle} />;
-          } else if (feat.geometry.type === "Polygon") {
+          } else if (
+            feat.geometry.type === "Polygon" ||
+            feat.geometry.type === "MultiPolygon"
+          ) {
             layer = <Layer key={index} {...polygonStyle} />;
-          } else if (feat.geometry.type === "LineString") {
+          } else if (
+            feat.geometry.type === "LineString" ||
+            feat.geometry.type === "MultiLineString"
+          ) {
             layer = <Layer key={index} {...lineStyle} />;
           }
 

@@ -25,20 +25,21 @@ const Home = () => {
   const [lat, setLat] = useState(27.700769);
   const [zoomLevel, setZoomLevel] = useState(15);
 
-  const mapContainer = useRef();
+  const mapRef = useRef(null);
 
   useEffect(() => {
     console.log(lng, lat, "testing");
-    // let map = mapContainer?.current.getMap();
-    // map.flyTo({
-    //   center: [lng, lat],
-    //   zoom: zoomLevel,
-    //   speed: 1, // Controls the speed of the flight animation
-    //   curve: 1, // Controls the easing of the flight animation
-    //   essential: true,
-    // });
-    // console.log(mapContainer?.current);
-  }, [lat, lng]);
+    // let map = mapContainer.current?.getMap();
+    mapRef.current?.flyTo({
+      center: [lng, lat],
+      zoom: zoomLevel,
+      speed: 1, // Controls the speed of the flight animation
+      curve: 1, // Controls the easing of the flight animation
+      essential: true,
+      duration: 2000,
+    });
+    console.log(mapRef.current);
+  }, [lat, lng, zoomLevel]);
 
   const settingZoomLevels = (lng, lat, zoomLevel) => {
     setLng(lng);
@@ -49,7 +50,7 @@ const Home = () => {
   return (
     <>
       <Map
-        ref={mapContainer}
+        ref={mapRef}
         // zoom={zoomLevel}
         minZoom={10}
         maxZoom={22}
@@ -59,7 +60,7 @@ const Home = () => {
           latitude: lat,
           zoom: zoomLevel,
         }}
-        style={{ width: "100%", height: "100vh" }}
+        style={{ width: "100%", minHeight: "100vh" }}
         mapStyle="https://map-init.gallimap.com/styles/light/style.json"
         attributionControl={false}
       >

@@ -10,6 +10,7 @@ import { Col, Row } from "react-bootstrap";
 import location from "../../assets/images/location.png";
 import { Link } from "react-router-dom";
 import { imageUrl } from "../../urls/urls";
+import Direction from "../directions/Direction";
 
 const Autocomplete = ({ settingZoomLevels }) => {
   const [word, setWord] = useState("");
@@ -68,6 +69,12 @@ const Autocomplete = ({ settingZoomLevels }) => {
     setShowDiv(!showDiv);
   };
 
+  const [direction, setDirection] = useState(false);
+
+  const handleClick = () => {
+    setDirection(!direction);
+  };
+
   const handleName = (name) => {
     setWord(name);
     setSelectedWord(name);
@@ -103,9 +110,20 @@ const Autocomplete = ({ settingZoomLevels }) => {
               <img src={search} alt="search" />
             </Col>
             <Col md={2}>
-              <img src={directions} alt="directions" />
+              <img
+                src={directions}
+                alt="directions"
+                onClick={() => {
+                  handleClick();
+                }}
+              />
             </Col>
           </Row>
+          {direction && (
+            <div>
+              <Direction />
+            </div>
+          )}
 
           {/* <div className="close-button">
             <img onClick={handleClear} src={close} alt="close" />

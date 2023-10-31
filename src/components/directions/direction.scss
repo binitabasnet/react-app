@@ -1,0 +1,43 @@
+.directions {
+  //   position: absolute;
+  //   z-index: 1;
+  background-color: #ffff;
+  border-radius: 30px;
+  width: -webkit-fill-available;
+  height: 90vh;
+  .icons {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 6px;
+    img {
+      height: 25px;
+      width: 25px;
+    }
+  }
+  .direction-from,
+  .direction-to,
+  .locate {
+    img {
+      height: 20px;
+      width: 20px;
+    }
+    input[type="text"] {
+      border: 1px solid #fee2d6;
+      border-radius: 8px;
+      width: 38vh;
+      padding: 8px;
+    }
+    span {
+      color: #0d1829;
+      font-family: "Montserrat", sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 39px;
+      letter-spacing: 0px;
+      // text-align: left;
+    }
+  }
+  .reverse-places {
+    margin-top: 18px;
+  }
+}
